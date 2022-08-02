@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block body %}
+    <strong>{{ form.errors }}</strong>
+    <form action="{% url 'polls:login' %}" method = "post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="ورود">
+    </form>
+{% endblock %}

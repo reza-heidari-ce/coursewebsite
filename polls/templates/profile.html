@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block body %}
+    <strong>{{ form.errors }}</strong>
+    <div>
+        <label for="text_first_name"><b>نام:</b></label>
+        <span id="text_first_name">{{ user.first_name }}</span>
+        <br>
+        <label for="text_last_name"><b>نام خانوادگی:</b></label>
+        <span id="text_last_name">{{ user.last_name }}</span>
+        <br>
+        <label for="text_username"><b>نام کاربری:</b></label>
+        <span id="text_username">{{ user.username }}</span>
+    </div>
+{% endblock %}

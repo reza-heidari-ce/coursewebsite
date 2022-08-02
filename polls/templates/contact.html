@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+    <strong>{{ form.errors }}</strong>
+    {% if not done %}
+        <form action="{% url 'polls:contact' %}" method = "post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="ثبت درخواست">
+        </form>
+    {% else %}
+        <h1>درخواست شما ثبت شد</h1>
+    {% endif %}
+{% endblock %}

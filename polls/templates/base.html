@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa-IR">
+<head>
+    <meta charset="UTF-8">
+    <title>Course</title>
+    {% load static %}
+    <link href='{% static "/polls/style.css" %}' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+			<li><a href="{% url 'polls:index' %}">صفحه اصلی</a></li>
+            {% if not request.user.is_authenticated %}
+                <li><a href="{% url 'polls:register' %}">ثبت نام</a></li>
+                <li><a href="{% url 'polls:login' %}">ورود</a></li>
+            {% else %}
+                <li><a href="{% url 'polls:profile' %}">نمایه</a></li>
+                <li><a href="{% url 'polls:logout' %}">خروج</a></li>
+            {% endif %}
+            <li><a href="{% url 'polls:contact' %}">تماس با ما</a></li>
+		</ul>
+	</nav>
+    {% block body %}
+
+    {% endblock %}
+</body>
+</html>

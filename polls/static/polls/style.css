@@ -1,0 +1,29 @@
+{% load static %}
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.navbar ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: rgb(94, 83, 83);
+}
+.navbar li{
+	display: inline;
+}
+.navbar li a {
+	/* float: left; */
+	padding:5%;
+	font-size: 1.2em;
+	line-height: 40px;
+	text-decoration: none;
+  	color: white;
+}
+.navbar li a:hover {
+	background-color: #111;
+	transition: all 0.3 ease;
+}
