@@ -10,6 +10,9 @@
         <br>
         <label for="text_username"><b>نام کاربری:</b></label>
         <span id="text_username">{{ user.username }}</span>
+        <br>
+        <label for="text_username"><b>جنسیت:</b></label>
+        <span id="text_username">{{ user.userprofileinfo.gender }}</span>
     </div>
     <p><a href="{% url 'polls:setting' %}">ویرایش پروفایل</a> </p>
 {% endblock %}

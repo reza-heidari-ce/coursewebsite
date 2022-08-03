@@ -3,6 +3,7 @@
     <strong>{{ form.errors }}</strong>
     <form action="{% url 'polls:setting' %}" method = "post">{% csrf_token %}
         {{ form.as_p }}
+        {{ second_form.as_p }}
         <input type="submit" value="ویرایش">
     </form>
 {% endblock %}

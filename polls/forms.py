@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, RegexValidator
-from .models import Course
+from .models import Course, UserProfileInfo
 
 
 class RegisterForm(UserCreationForm):
@@ -33,13 +33,23 @@ class ContactUsForm(forms.Form):
     text = forms.CharField(label='متن', min_length=10, max_length=250, widget=forms.Textarea)
 
 
-class ProfileChangeForm(UserChangeForm):
-    password = None
-
+class ProfileChangeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("first_name", "last_name")
 
+
+class ProfileChangeInfoForm(forms.ModelForm):
+    class Meta:
+        model = UserProfileInfo
+        exclude = ('user',)
+        labels = {
+            'gender': 'جنسیت',
+            'biography': 'بیوگرافی'
+        }
+        widgets = {
+            'biography': forms.Textarea()
+        }
 
 class CourseCreationForm(forms.ModelForm):
     class Meta:

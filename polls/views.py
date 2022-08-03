@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from .forms import RegisterForm, ContactUsForm, ProfileChangeForm, CourseCreationForm
+from .forms import RegisterForm, ContactUsForm, ProfileChangeForm, CourseCreationForm, ProfileChangeInfoForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -10,7 +10,9 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
-from .models import Course
+from .models import Course, UserProfileInfo
+from django.core.mail import send_mail
+
 
 def index(request):
     template = loader.get_template('index.html')
@@ -22,6 +24,9 @@ def register(request):
         form = RegisterForm(data=request.POST)
         if form.is_valid():
             form.save()
+            request.user.userprofileinfo = UserProfileInfo()
+            request.user.userprofileinfo.save()
+            request.user.save()
         else:
             template = loader.get_template('register.html')
             return HttpResponse(template.render({'form': form}, request=request))
@@ -54,7 +59,12 @@ def contact_us(request):
     if request.method == 'POST':
         form = ContactUsForm(data=request.POST)
         if form.is_valid():
-            #TODO send mail
+            send_mail(
+                form.cleaned_data['subject'],
+                form.cleaned_data['email'] + '\n' + form.cleaned_data['text'],
+                'r4heidari@gmail.com',
+                ['r4heidari@gmail.com']
+            )
             return HttpResponse(template.render({'form': form, 'done': True}, request=request))
         else:
             return HttpResponse(template.render({'form': form, 'done': False}, request=request))
@@ -73,16 +83,22 @@ def setting(request):
     template = loader.get_template('setting.html')
     if request.method == 'POST':
         form = ProfileChangeForm(data=request.POST)
-        if form.is_valid():
+        second_form = ProfileChangeInfoForm(data=request.POST)
+        if form.is_valid() and second_form.is_valid():
             if form.cleaned_data['first_name'] != '':
                 request.user.first_name = form.cleaned_data['first_name']
             if form.cleaned_data['last_name'] != '':
                 request.user.last_name = form.cleaned_data['last_name']
+            request.user.userprofileinfo.gender = second_form.cleaned_data['gender']
+            request.user.userprofileinfo.biography = second_form.cleaned_data['biography']
+            request.user.userprofileinfo.save()
             request.user.save()
             return redirect('polls:profile')
         else:
-            return HttpResponse(template.render({'form': form}, request=request))
-    return HttpResponse(template.render({'form': ProfileChangeForm()}, request=request))
+            return HttpResponse(template.render({'form': form, 'second_form': second_form}, request=request))
+    return HttpResponse(template.render({'form': ProfileChangeForm(), 'second_form': ProfileChangeInfoForm(
+        initial={'gender': request.user.userprofileinfo.gender, 'biography': request.user.userprofileinfo.biography})},
+                                        request=request))
 
 
 @login_required(login_url='polls:login')

@@ -1,5 +1,17 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+
+
+class UserProfileInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    GENDERS = (
+        ('M', 'مرد'),
+        ('F', 'زن'),
+        ('U', 'هیچکدام')
+    )
+    gender = models.CharField(max_length=20, choices=GENDERS)
+    biography = models.CharField(max_length=200)
 
 
 class Course(models.Model):
@@ -18,7 +30,7 @@ class Course(models.Model):
         ('چهارشنبه','چهارشنبه')
     )
     first_day = models.CharField(max_length=10, choices=WEEKDAYS, null=False, blank=False)
-    second_day = models.CharField(max_length=10,null=True, blank=True, choices=WEEKDAYS)
+    second_day = models.CharField(max_length=10, null=True, blank=True, choices=WEEKDAYS)
 
     def __str__(self):
         return self.name
