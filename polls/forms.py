@@ -1,7 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, RegexValidator
+from .models import Course
 
 
 class RegisterForm(UserCreationForm):
@@ -30,3 +31,32 @@ class ContactUsForm(forms.Form):
     subject = forms.CharField(label='عنوان', required=True)
     email = forms.EmailField(label='ایمیل', required=True)
     text = forms.CharField(label='متن', min_length=10, max_length=250, widget=forms.Textarea)
+
+
+class ProfileChangeForm(UserChangeForm):
+    password = None
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name")
+
+
+class CourseCreationForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = '__all__'
+        labels = {
+            'name': 'نام درس',
+            'department': 'دانشکده',
+            'course_number': 'شماره درس',
+            'group_number': 'شماره گروه',
+            'teacher': 'استاد درس',
+            'start_time': 'ساعت شروع',
+            'end_time': 'ساعت پایان',
+            'first_day': 'روز اول',
+            'second_day': 'روز دوم'
+        }
+        widgets = {
+            'start_time': forms.TimeInput(format='%H:%M'),
+            'end_time': forms.TimeInput(format='%H:%M')
+        }

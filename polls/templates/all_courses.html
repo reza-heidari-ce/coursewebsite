@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+{% for course in course_list %}
+    <div>
+        <h2>{{ course.name }}</h2>
+        <h3>{{ course.department }}</h3>
+        <h3>{{ course.start_time }} تا {{ course.end_time }}</h3>
+        <h3>{{ course.first_day }}{% if course.second_day is not None %} و {{ course.second_day }}{% endif %}</h3>
+    </div>
+    <br>
+{% endfor %}
+{% endblock %}

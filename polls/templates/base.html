@@ -15,6 +15,7 @@
                 <li><a href="{% url 'polls:login' %}">ورود</a></li>
             {% else %}
                 <li><a href="{% url 'polls:profile' %}">نمایه</a></li>
+                <li><a href="{% url 'polls:panel' %}">پنل</a></li>
                 <li><a href="{% url 'polls:logout' %}">خروج</a></li>
             {% endif %}
             <li><a href="{% url 'polls:contact' %}">تماس با ما</a></li>
